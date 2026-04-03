@@ -1,5 +1,6 @@
 pandas
 numpy
-umap learn
+umap 
+sklearn
 hdbscan
 re
