@@ -1,16 +1,34 @@
-import csv
+import re
 
-def load_csv(filepath):
-    data = []
+def extract_keywords(text):
+    words = re.findall(r'\b[a-zA-Z]{4,}\b', text.lower())
 
-    with open(filepath, mode='r', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
+    # Remove common useless words
+    stopwords = {
+        "the", "is", "are", "was", "were", "this", "that",
+        "with", "from", "have", "has", "had", "will",
+        "shall", "can", "could", "would", "should"
+    }
 
-        for row in reader:
-            data.append({
-                "student_id": row["student_id"],
-                "cluster_id": int(row.get("cluster_id", 1)),
-                "raw_text": row["raw_text"]
-            })
+    keywords = [w for w in words if w not in stopwords]
 
-    return data
+    # Remove duplicates
+    return list(set(keywords))
+
+
+def extract_equation(text):
+    match = re.findall(r'[a-zA-Z]+\s*=\s*[a-zA-Z0-9\*\+\-/\^\.\(\)]+', text)
+    return match[0] if match else None
+
+
+def generate_rubric(reference_answer):
+    keywords = extract_keywords(reference_answer)
+    equation = extract_equation(reference_answer)
+
+    return {
+        "keywords": keywords,
+        "optional_keywords": [],
+        "keyword_weight": 0.5,
+        "equation": equation,
+        "math_weight": 0.3
+    }
