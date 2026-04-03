@@ -1,122 +1,122 @@
 [
   {
     "student_id": "002",
-    "full_text": "wing fs sy uolie. | ‘with a sala Ad v b — toads aii ea tas bt eed. ane an Readability + “They. by © fy 7 of numeric. Go + Aon vive iin | to by the _vorioble /name. Teacher's #vgk Hmde Date: | | —— - Qe 2 FF from = ” En | FF Clu if Whe muwhte is wun i fo2 == (\" eo\") _ | \" Odd\" . | _ _ | | Teacher's Signature Date : : : Page Teacher's Signature",
-    "avg_confidence": 68.5,
+    "full_text": "Que 2 Date : Page: # Taking imput from the user Vint Cinput (\"Enter an number = integeres \")) # # Clucking if the number is even or odd number %2 == 0: AMAR KRISH if print (\"Even\") else print (\"Odd\") Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "003",
-    "full_text": "fucnrra SANSINGE nam wth ond hoe may be of Anta dota Mot CON be ed § , they fp = namy a 1. in ffi on int Ay the 5 ——— ages of 8 ip — Teacher's Signature RuchIta {ANsiNGe int —— nase Ay the a Teacher's Signature the number on — — Date: Page: iL = I ee | _ | | AMAR KRISH Teacher's Signature Teacher's Signature",
-    "avg_confidence": 64.3,
+    "full_text": "RUCHITA BANSINGE Date: Page i Ans 1: A variable in programming is a symbolic name associated with a value and whose associated value may be changed. It acts as a storage location in memary Importance of variable 1. Bata storage: Variable hald data values that can be used and manipulated during program execution. 2. Readability: They improve cade readability by allowing developers to use meaningful names instead of Numeric literals. 3. Dynamic Behaviour: Variables enable dynamic behaviour in programs, allowing far plexible sperations hased on user input or program legic. Inc, a variable is declared by specifying the data type fallowed by the variable name. The syntar is?\" \"data-type variable name; example: int age i ; // Declaration of an integer AMAR KRISH Teacher's Signature. Any: 2 # Taking input from the user number = int ( input (\"Enter an integer : \" || ## checking if the number is even or add if number 7 2 == 0: else print (\"Even\") print (\"Odd\") AMAR KRISH Date: Page: Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "021",
-    "full_text": "Nene - Hi roy Veniadle sn fre Ad aN dy on where VON: «Ln Pe Gwic A ; > Can be “used fou un (iy aint - 5 | > Can de. tire Ke int tote] mare (ea. _ r{\"p te} >); pang Be 1p apne | T ers Slane Date: i © lg ro oe Teacher's Date Page : Teacher's Signature",
-    "avg_confidence": 71.2,
+    "full_text": "Name - Kinney Bhargause Date: Page: 41 227 Variable Ah which 2 the programming is an real world entity Can be valute vetti Variable the course declared can vary Can be en the program whose over the used to Course execution Store g values over of program execution, variable des int variable_name un ( is declared int datatype foron int total mark = og 027 variable name Colon int input for num printf input (\"Enter the number per)); print fater the number to be checked\") num= input 166 Enter the number :\"); ist пит AMAR KRISH Teacher's Signature Date: 42 Page: 02] num = input(\"Enter the num' 11 check if the nem is even 呢 if (mum 1-2==0 در print & r the number is cuen\" Ist 11 chack if the else: num is ext print for the number is odd\" 오 AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "271",
-    "full_text": "| car * be 4 exeurtron of Ty ad as values .Voriobks, allow ve and mod ify data. mr enable tle id Z rade, —--4 — \"Flea balty vs spec Fy ted 4 le rame. 2 wel by. — name. — allocate —— — } an no mead and + — Name: | Ayush In peo ag B a which data at can be the exeutron of Tt ack as contaifian for a\\low psogxommers to anch modify » Voriables ase in _ . because enable | in. code. Reusablkfy 4 flexukh}y flow spec Fyig Oeclo 8 prec fy ! type followed bs. bie. rame. tas _dota tyre filo wel = name. _. the faxatron memosy = name. —. | = 26 ; ae clove an ind med d o as value. Signature Datr 5b2 AMAR KRISH Teacher's Signature Page",
-    "avg_confidence": 72.3,
+    "full_text": "Name: Ayush Kamble Date: 541 Page 1 Que A variable in programming 15 a symbolic be changed name which stores data that can during the execution of program. It act as container for values. Variables allow programmers to store, retrieve and modify data.\" * Variables are important in programming & because they enable flexibility, readability efficiency Data in code Storage 2) Reusability & Flexibility 3) Control Flow variable declared by specifying vonable name. is by data type followed data-type variable declaration - name allocate memory * In C its The Example This int age declare =25 an integer named age and assign value AMAR KRISH Teacher's Signature. 22 Date: 542 Page: AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "276",
-    "full_text": "FRHOK, Ban Wate 55\\ i] = | 2 a AMA Used to | oF. . Variable fo gh data nu - . ofits type —.- © — —-. — — | KRISH AR Teacher's Signature Date Page scltul_by; . tiil VuWol — | = Pd Teacher's Date poge",
-    "avg_confidence": 55.3,
+    "full_text": "Name: Tanmay ASTOR Bursagaue Date: 551 Page: In programming variable is a named storage location in memory used to hold a value that can be changed during the execution of program. Variables allow you to store data like numbers terms or others type of information and reference them later by their names. AMAR KRISH Teacher's Signature Date: 552 Page: AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "278",
-    "full_text": "| | A A LA Hak ° id a : & x vf 4 a A A Teacher's Signature Name? Date + Page: tr . | | i i AMA LAMAR Teacher's Dare page Teacher's Signature",
-    "avg_confidence": 68.7,
+    "full_text": "Name: Aarya Bhagdikar Date: Page: 555 In programming, stored data in athe In programming it 1) Data Storage: (i) Rea to read the code It enhances flexibility a variable refers to It allows memory. and manipulate it a value is to store in the program. is used for :- & efficiency in programmnning. AMAR KRISH Teacher's Signature AMAR KRISH Class Project { int a ; print (\"Enter and. : \"Scan a(\" '); Date: Page: 556 Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "301",
-    "full_text": "Nawe Nawe I Date: 60| Page : | our pe 2) = dun _eveu Hm i edd et . |: . | Teacher's Signature Date: Page : ol Sto age Ja uses do able wake aud ve c 2 ae wake us bo 4 Teacher's Signature Date: Page: Teacher's Signature",
-    "avg_confidence": 75.4,
+    "full_text": "Name = помјесе Јаким Date: 601 Pages M imput (\"Enter your питвен\") # raking impect if ((m³/2) = = 0) print (\"Even\") #m4 % 2 = = 0 thou even else print (\"odd\") # (m/ 2) becomainder =0 is odd AMAR KRISH Teacher's Signature. → Variable is a container 2 3 Date: Page: 602 ом a bag which holds value assigned to it Importance и Data vaniable - of Store age Readability in 11 variable :- fit allow used to store data. variable make the code diff more easy to understand declaratio u u C declare by nawing it hot a type followed unta,b,ci variable by л name 12- intai flot bi Ocharc; AMAR KRISH Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "303",
-    "full_text": "| | Prrotham Days 605 ——= | = Date: Prratham chahan = an Tk ==0! . _ Yala. (45 num numbt\" _ Is = —_pnnt uoliad i | a — AMAR KRISH Teacher's \\ | age G06 = = = = A variable iN pro rn: named do ev). Ye hot as A TI |. can chan ge aun ng Of = — of _ 1 @ st eo coors vat ry @) — | beckon a We. | 1g 6 mic, oy voable Nana, — Ex ? a int a | ink 1S typ. an. Rigen Date: 1 Pages BH nd moun Os. nb 2 a qerum te 4 —- KRISH Teacher's Signature Teacher's Signature",
-    "avg_confidence": 70.8,
+    "full_text": "Pratham chauhan Date 605 Page: 2) def check-even-odd () : if try: num = int (input (\"Enter an integer: \"}) num % 2 == 0; print(\"As num} is even number\") else: printffnumy is except value error: odd number. \"J print (\"please enter valid integer\") AMAR KRISH Teacher's Signature. Date: Page: 606 A variable in programming storage location that holds variable program. in the a value. can 15 named computers memory the value stored in the change during execution of Importance of variable in programming's Data storage code flexibility ⑤Readability a vavable mc. 15 Declaning In ca variable declared by Specifying Ex 9 Дана куре int age; followed variable name by int 15 data type that specifies that age will hold an integer valive. Ex #include <stdio.h> Int main (12 int age: 25; printf(\" retum o Age 15 0 %d\\n\" &, age); AMAR KRISH З Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "310",
-    "full_text": "ct | Va Osy , AS. a Or . , ued te dota Anat and o | to hold Pr ~2t ducing 09 cn executicn Seoportonce of mening | ~ co \\ OMous chore Gale. ocd tus _ i be. bo od — Manage — um. prom arcl dy. Ay. ce Mowed | Call Chore 5 = data rally ink + Teacher's Sianature — Pool chor — ink og + (Inc) Dat 620 Page {nk C\" Enter \") if ‘ == —_ The is even”) ‘2 LI=0 C The number eel Crum = = ’ ‘ \") BR an in int _C Enter an ard to ded a Shu av, vig bl Neds ig by ted els * t Num is for 4. Gill tN Date: Page: Teacher's Teacher's Signature",
-    "avg_confidence": 70.1,
+    "full_text": "Parimal Sarede 23070990 66 Date: Page 619 Q1) Variable Programming identifier used to ας may change re ferenced and manipulated is 9 Symbolic name or Store data that can be within a Program It acts a Containe to hold value that ΟΥ be updated during Program Programming allows programmers execution. Importance of variable in c Data Storage and reuse : Variables data and reuse to store it throughout the program. Without program it would be impossible to hold and data during program. manage in Readability and flexibility: Variables make program to modify more readable A variable is followed kind and easier declared by specifying its data type the variable. The data type indicates the of data the variable by int feat, char etc. will store such as Syntax? data-type variable-na name: int age; → (In C) AMAR KRISH Teacher's Signature Date Page: 620 num= int Cinput (\"Enter an if (num1 == 0): integer: \") print (\"The number is even\"). number elif (num % 21=0) Print (\"The number is odd\"). elif (num% 2) num = int (input (\"Enter an. integer: \") # Takes an inpul and convert it into integer if (num %2==0): # checks if num is divided by 2 else print (\"The number is even \"Print sentence. # if num is not divisible by 2 else block is executed Print (\"The number is odd\") # If will print the sentence AMAR KRISH Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "364",
-    "full_text": "Date Page 727 Sahl S +. - Variable ta YO9r-em t name Hak dan feol ro Stored & wel Cen ge Can dah, —- ead Cod becom ¢ ead tn Al of ee ira Ba “Ge WV — — Teacher's Signature Date Page Stored & vel — an ba Sent te. Can be fs Date 23 AMAR KRISH Teacher'$ Signature Page Date: Page: Teacher's Signature",
-    "avg_confidence": 74.3,
+    "full_text": "Name: Sahil. S. Gour Date: 18/10/24 Page: 727 сек What 75 Varable programming 1 → Variable name Stored during that data and Programming Can Symbolic be used го Can be changeet program execution 22 Сил be used to and Casy ry using variable to read, variable Can stored data, code become be reused and code became Plenible. and it helps до main tala the Stale of applicaten En age ( En tw 15 аде Valable AMAR KRISH Teacher's Signature Date: 728 Page: AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "368",
-    "full_text": "Name: Asmit A. | + Dr 735 Section: H- 44 Anas A tp a own veouable tench do howe a Apecibic type . The type 06 the would Chan, int, Float, —L , ete. ee num int (\" number to Che ‘ Bunt (\" The number | or evens | in odd S.gnature Nome: Asmit A. : Xv. Section: 44 — Aras Al +o double , etc. GF nm_ = int input (\" enten any nunben 0 ak (num ==0 The in | els_ @uteut _ even din odd Date: 736 Page : Teacher's Signature Date: Page : Teacher's Signature",
-    "avg_confidence": 79.6,
+    "full_text": "D Name: Asmit A. Umredkar Branch: IT. Section: H- 44 - Roll no. Date: Page a 735 Ans: A variable refers to a Starage area that Our programs Can manipulate in C. Variable tend to have a Specific type. The the Size & layout of Some of the types the would variable's type define memory be: char, int, Float, double, etc. 2) Ans num = t int (input (\" enter any number to test whether it is odd or even;\") if (num % 2) == 0; else: Print (\" The number in even\") Print (\"The provided number is odd\") Output: Enter number to test whether it is any odd or eveni 887 887 is odd AMAR KRISH Teacher's Signature Date: 736 Page: AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "372",
-    "full_text": "hanks hoa Cea 28 Qi) be be said it ts he each a we con Tht lat bu, ont Cint +, bss ofl h bss (dade rection) ft onlg Cun uted poss “Tok aater ort pri qabird WJ cdum mu Wumh 7 mxt Bands 2 python a cody on vatlable x It jem I Com Puddion. & O- il Li aha CX) pont prot + t \"gonhhm : (towlin\" Bicqt;) 2- a - bl o mgs Tot 15 elee_it Teach goa",
-    "avg_confidence": 65.6,
+    "full_text": "Akanksha Sawant CSEA -25 Date: Page 743 Q1 Variable is containce like structure to store data. It can he said it is like label to our each data membe. Importance is significant, 1n+ 1 = 10; In с it is declared as, CALy future in some function, and executing but makes it ample to -variable \"or, floaty - 10.0; as we can access the \"labels\" in varial debug not only in compiling alsod ant for (int x, flest you 11 code here 3 variable In depth, variable is store in →Variables bss section (data suction) while using gebat. gdb. declared global, is often limited to function only Camicers variables can be used to pass The date from one function to another by passing as arguement and churning. 92] python code X =0 input (x) if (x%2==0) else print (\"even\") print (\"odd\") lintialization бр valiable x even. Tum 11 reading input from user. 11 logical comparison with &0. Sprinting 11 logical arguement 11 printing AMAR KRISH Teacher's Signature Date : Page: Method-2 P . • input Algorithm. a number conut to binary the chuck MSB •If MSB is • Hop. (Conversion to rumble. to Binary) I then it is odd else it is even. AMAR KRISH Teacher's Signature 744",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "374",
-    "full_text": "—— tah, can. be a obit otheten ot chang to In a ~ name Ie a Mary — - - 7 — y = Nam Eainbl Ie Vabku Lab _k knctn 0x unbnelln end lan_ “ —_—— 3 748 az Jake Date Page: —— Teacher's Signature Teacher's",
-    "avg_confidence": 64.9,
+    "full_text": "Name Anushta, V. Dabhekar 81 Date: 747 Pages A variable is a named storage location that holds a value, which can be a number, string, object collection or Cointer. The value can be known or unknown, and can change # defending on conditions or information Passed. the Program. In C variable is a user- -defined or a user-readable custom name assigned to a методу to Importortance of variables in Programming. location 1. Data storage: variables allow Program to store data that can be used and modified throughout 2. the Program, nating it dynamic and flribl - Resurability: Variables enables the variabib name rather data by referming kalice every than retyping the the its needed AMAR KRISH Teacher's Signature. 22 # Rython Program to check if a number is even or odd. # Take integis input from the uses number = int (input (\"Enter an integer: \") :\")) AMAR KRISH Date: 748 Page: Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "383",
-    "full_text": "76 Nome — dnd jo tha we we € ho mtd & UB. } which Lon be 5 ob Nae during a sat an — RT ey C = - ~ — ag = and C \" Wen . or 0d Mal — — tum) 22 5. Teacher's Siqnature Sayeth ry rouability ~PYtn Lede 22 2 0 3. the wen Teacher's Siqnature ke Gin) | | I! Teacher's Signature Dat Pag <4 Teacher's Signature",
-    "avg_confidence": 68.7,
+    "full_text": "Date 765 Page: Name :- Jayesh Suresh Dhanwas. Q. I Ans:- Variable programming refers to the use of \" Variable in a data Nalues that programming language to store can be changed cluring the execution of a program. Variabile as containers for storing information like nambers, ettrings or defects, which can be manipulated; act o Importance of Variable in programming 1) store be manipulate data during program 2) execution 80 Improve cade readability to reusbility. Variable declaration in c • datar type variable. name; For ex- int age; age = 2); 9.2) python code :- num= int # take input from the user and convert \"an integer. it to num = int ( impurt (\"Enter an integer: \")) # check if the number is even num %% 2 = = int AMAR KRICH وہ Teacher's Signature or odd Date: 766 Page: prints ( Print (t\" {num} is even.\") # corput if the number is even else: # print (f\" {num} is odd. \") output if the number is odd. AMAR KRISH Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "384",
-    "full_text": "vate 167 Cinetan atve —_ Roll H ay > A vaniable in. Peogeamming _ Storage can using the in pregeam to Stare 7 _, and the pre — Tmecetance ct vaniable 4n peeqeamming Odta Variables to Store data thal he tured —and throught. the. Qynami ic Nature Try of dota te j + _prognams flexible and dynamic 1 3 + the . Aa By code can an different. dota inpuls tia the in Q Vanioble us _doke- — type -by name ~ - Syntax Yaricble name . — Example tnt age; | float Solary | SBS Teacher's Mame Chetaon atoe Bcleaq \" RelL_Na\" H 41 can different. using the In mucpy tbcut in to stone 7 manipulated be tued and 3 Code Rewsa bility 8y using Gl can an different dota without ibele chugira Declaning. the in C - name | name (nt age ; | float _Solary | | Date: — 768 i Page AF. Cheek it tae asa. by — numben 2 by it's on even nat 2. its an odd Point an Date Page: ({ number 2 2O 5. teint even number Hit wnat divisible ey 2. its an. odd eee eee ee —- AMAR KRiSH Teacher's Signature Teacher's",
-    "avg_confidence": 69.6,
+    "full_text": "Name Roll No. Chetan H 47 Banapatme Date: 767 Page: 1> => A variable in programming is in memory that can hold named Storage location different Values using the execution in program It allows Retrieve and manipulated througout program the to stope program Importance of variable in programming 1. Data manipulation : Variables to Store data that Can be used and manipulated throught the program the value of data to 2. Oynamic Nature: They allows change, making programs more flexible and dynamic Reusability: By using variables 3. Code the same piece of code can operate on different data. inputs without the code itself. changing Declaring the Variables in C In c a Variable is declared by type followed by the variable name Syntax: data-type variable name; Example int age; float salary: AMAR KRISH Specifying its data- Teacher's Signature 2> ⇒ # Ask the number = Date: 768 Page: user to input an integen int (input (\"Enter an integen: \")) # Check if the number els divisible by 2 it number % 2 = = 0 ÷ #jf Aum divisible by 2 .. it's an even number Print (f\" {number } is an even number.\") else: #1f hot divisible by 2 it's an odd number Print (f\" { number } is an odd питвею.\") AMAR KRISH Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "388",
-    "full_text": "Vee Wanjant @-1. Sol. A vaniable in named location | Vee Wanjant CSE B-165 ‘in than “can hold diffenemt types of data | progam execution. Following ane the of _ Dat -prognoms to ond data dynamically. enabling openations Caleulations| data anocessing- | a. .Readalailtty’ By uaing vontable yau can mi Yous Cede mone Undastable. a Once a is defined it can be multiple _ times. — 4+ Scope have that defines whene they can he _ accessed your code. | data anocessing- Code mane a Once a is defined it can be _ times. accessed tm your code. —— Th python, a is assigning @ - to oa hame, without needing to specify the type. | to a without needing to the type. The isi = value Age = 26 Age” Teachers Sol... = int an # input fom user heck if number is even 29-203 is even\") Display even 4 i£ ie Ise print is odd”) “4 Display add Tiic",
-    "avg_confidence": 75.2,
+    "full_text": "Date Page: 775 Veer Wanjari CSE B-165 1. Sol. A variable in in named storage location. hold different types of dat a values a programming is memary than can during program execution. Following are the importance of variables: allow programs to stare and Data storage: Variables manage data dynamically, enabling operations like calculations and data processing. Readability: By using descriptive variable 2. your code more understable. hames, you can make 3. Reusability: Once a variable is defined it can be reused. multiple times. 4. Scope:Variables have accessed in your code. In python, a a a scope that defines where they can be variable is declared by simply assigning value to The syntax is: variable_name = value name, without needing to specify the type. eg. age = 25 print (\"Age\", age) a AMAR KRISH Teacher's Signature Date: 776 Page: 0.2. Sol. number = int (input(\"Enter an integer: \")) // Take input from user if number % 2 == 0; else: print (\"Number is even\"). print (\"Number is odd\") // Check if number is even 11 Display even // check if number is odd 11 Display add AMAR KRISH Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "392",
-    "full_text": "Name ch “Tuxale Date 7358 ash abe —4e_ In ps ete Con _ wont poe ow iC ene. deo ain Gn _ named _ ~ Ji of pes | wt Os we ond\" sr. dotex Otc code... be at Jo ot den - — ik ox for C at date The _ des . _ 35 > oxe _ chex 1 double ete Je: Far Dectoxe 4 Vo i les Atoos | I] rer fiaas ~ (hove nome; Oedowe > ~ & Teacher's Signature Name :- Peas Tuxole Vay, Ne. sh _ In on — Programs oe. _for v dex 1 double Coder Fak 5 TL meg ve fT As dan. nome; fi _ 2 5 nome - | Date: Page: 78h — — _* Code - Trpud nom + (input (\"brie #t Chetk number even ov odd JP 2 © = 0 ae\" as — C4 ss odd” ) Output numbet 2 6 6 even = 3 3 ~ | — Teacher's Signature Date: Page: at even ow odd JP 2220 2 6 Teacher's Signature",
-    "avg_confidence": 72.5,
+    "full_text": "Name:- Ayush Turale Date: Page: 783 Q.1 In input k The Variable it allows ces to stare core Change it Name: Ayush Variable and -maticen can Turate programming you can Later values you give a fore using for eg:- you as height and cap importance of that want Store, infor- to use in program name to you specific in program- Create OL a variable variable named the height inside it programming dater according that value Ace Lese code. it IJ will be useful in complicated ore lengthy programs semembering for Yemen using variable instead at Cat ore for calculations K The Loveable declared by use at clatatype The datatype dell the kend at data the variable is There inscgore * Eg:- Code:- chave, float avre various types like double etc. int height; I'l Declare integret variable float height; 11 Declare her fleat variable. name; 11 Dedare character. Char height 2 5'11\" name Ayush variable AMAR KRISH Teacher's Signature 9.2 * Code:- #Input num= int (input (\"Enter number?\")) # check number even or odd num % 2 = = 0 preind (f\" {number} is even.\") else: print (f\" {number} is odd;\") Output :- Enter طف کا number even number Enter 3 is odd 2 6 = 3 Date: 784 Page: AMAR KRISH Teacher's Signature",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "393",
-    "full_text": "| Dat Vag: 735 = — | yy & 4 - Sty -~H he bag — ik. ba tle — - ffs Sf num fe 2 = TO a — — Rune C \"num is on nex Teacher's Signature Date: Page 4 = ' | | (\" Qum %2 Date: 736 Page: H Teacher's Signature Date: Teacher's Signature",
-    "avg_confidence": 77.1,
+    "full_text": "Name Khushal JT-A 47 Sharma Date: Page 011 = A variable Store, dots I Oncorhin is a nomed it Can Importanus of Variable it holds - if allove Location which mamery change during proytin value for use in operation. Repeated dynamic chang Use valve Calculator Con take plan 785 in C, The declaration a variable is by using its happe and nome data type vonjuble - none En int Mank = 28 Mark here declezer a varieb) & its value is 28 (02) =) num=int (inpute (\"Enter od d If num o/12 = else: =0 Print (H. Tum is on even mo.\"). an integer :\")) AMAR KRISH Paint ( \"num is or odd no Teacher's Signature. Date: 786 Page: AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "398",
-    "full_text": "Name An Ket a Thora t 7495 —_— A vax «ble in wing forge /ocation w ith a used Lon chan of — the execution Impe of prog allow Va viables are Po because us _steve selvieve 4 manipulate cient ly the malse yew easier to understand by ng a way fe eecess data — — — How va ——tn a vanable 1S declased 6 i is type by vaniab le fx int g this dezlave an hum — fu —ink sye Name: Aniket a . Thorat A vaweble in Progra min Is @ forge /ocation vith, used hold Hal con witl execution —duxing the Va viables ayn _steve i cient ly the m = understand to How vaviaple . declare Ja 1S. declased by type by vaniab le declased vanable 15 a its sRccifyinj nane int ner. _this int “fe | Aniket Thosal Vay 0. 2 a Progsam :- _Cinput C member: if nun 20: ir Dur Age — is an even — faint odd. _ :- _ = “The promis user Conve . fe. using int () - 4 is used to check ré the number 3s. Ay —_ is an even &x7p Exllanehijoh 4 \"The Progra promts the user _4 using the input () function 1s Hen using 4p 2The 7. _used to | | Signature",
-    "avg_confidence": 66.8,
+    "full_text": "Name: Aniket G. Thorat Date: Page: 795 Q.1. Ans: A variable with a name in Programing 15 9 used to hold a execution change during the Importance of programming :- Program to efficiently reusable Variables store storage location value that of program Can important because they allow & manipulate data Flexible are retrieve the make & easier to Programs understand by providing a Way to label and eccess data How Variable declare In C, a Variable is specifying its data name type declared by followed by variable Ex: int num; This declare an integer variable named hum Ex:- int age = 25; AMAR KRISH Teacher's Signature Name Aniket G. Thorat Date: Page: Q.2 Ans Program :- num= int (input (\"Enter number: \")) if num % 2 = = 0 : Printf (F\"(num} is an even number') else Print (f\" {num} is an odd number \") 796 Examp Explanation:- • The program promts the user to enter a number using the input () Converted to an integer using function which int () is then The modulo operator 1. is used to check TE the number is divisble by 2 AMAR KRISH Teacher's Signature.",
+    "avg_confidence": 90.0,
     "flagged": false
   },
   {
     "student_id": "400",
-    "full_text": "Chat Sbxeae Lrabn IAba Mottotle foamed Q thot @ Data Uasriable declazax'Am Sfacpng dotted tlolde — ome 3 Sntok Ss fees hy tb. mai4) . ean A — tn Date Page Muftoile Chaitanya AMAR KRISH Teacher's Signalure Teacher's Signature",
-    "avg_confidence": 59.5,
+    "full_text": "Date: Page: 799 Chaitanya Mujbable\" A variable is a named Storage memory that •Importance: holds a value. location in ① Data Storage Ⓒ code flexibiliny 2 Ⓒ variable. declaration & C By specifying datatype follouted by variable Name Syntak data type Mariable - name ; Ex: float age; doc price; Code: in age i printf(\"Enter the Scarf (\" \"rod\", & #include <stdio.h> int main()& Variable declaration age ナ age 3 AMAR KRISH Teacher's Signature. Chaitanya Mujbaile Date Page: Q2 num = int (inpect (\"Enter on cbager :)) y тип до 2 AMAR KRISH else on print (f\" {num & is even.\") prise (F\" Emeen & is cold?) Teacher's Signature 800",
+    "avg_confidence": 90.0,
     "flagged": false
   }
 ]
