@@ -7,50 +7,65 @@ import numpy as np
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
+from csv_loader import load_teacher_answers
 from text_normalizer import build_embedding_text, clean_ocr_artifacts
 
 
-QUESTION_ONE_MARKERS = r"(?:Q\.?\s*1|Que\s*1|Ans?:?\s*1|Answer\s*1|प्रश्न\s*1|उत्तर\s*1)"
-QUESTION_TWO_MARKERS = r"(?:Q\.?\s*2|Que\s*2|Ans?:?\s*2|Answer\s*2|प्रश्न\s*2|उत्तर\s*2|9\.?2\)?|0?2\]|92\])"
+def _question_marker_patterns(number):
+    return [
+        rf"\bQ\.?\s*{number}\b",
+        rf"\bQue\s*{number}\b",
+        rf"\bQuestion\s*{number}\b",
+        rf"\bAns?:?\s*{number}\b",
+        rf"\bAnswer\s*{number}\b",
+        rf"प्रश्न\s*[:.]?\s*{number}\b",
+        rf"उत्तर\s*[:.]?\s*{number}\b",
+        rf"\b{number}[\.\):>\]]",
+    ]
 
 
-def extract_q1(text):
-    match = re.search(
-        rf"{QUESTION_ONE_MARKERS}.*?(?={QUESTION_TWO_MARKERS}|Any: 2|2>|2\)|$)",
-        str(text),
-        re.IGNORECASE | re.DOTALL,
-    )
-    if match:
-        return match.group(0).strip()
+def split_answers_by_question(text, question_ids):
+    normalized_text = clean_ocr_artifacts(text)
+    if not question_ids:
+        return {}
+    if len(question_ids) == 1:
+        return {question_ids[0]: normalized_text}
 
-    fallback_text = re.sub(
-        rf"(?:{QUESTION_TWO_MARKERS}|Any: 2|2>|2\)).*",
-        "",
-        str(text),
-        flags=re.IGNORECASE | re.DOTALL,
-    )
-    return fallback_text.strip()
+    positions = []
+    for index, question_id in enumerate(question_ids, start=1):
+        start_match = None
+        for pattern in _question_marker_patterns(index):
+            start_match = re.search(pattern, normalized_text, re.IGNORECASE)
+            if start_match:
+                break
+        positions.append((question_id, start_match.start() if start_match else None))
 
+    if all(position is None for _, position in positions):
+        answers = {question_ids[0]: normalized_text}
+        for question_id in question_ids[1:]:
+            answers[question_id] = "No Answer"
+        return answers
 
-def extract_q2(text):
-    match = re.search(
-        rf"(?:{QUESTION_TWO_MARKERS}|Any: ?2|2>|2\)).*",
-        str(text),
-        re.IGNORECASE | re.DOTALL,
-    )
-    if match:
-        cleaned_text = re.sub(
-            r"(Teacher's Signature|AMAR KRISH)",
-            "",
-            match.group(0),
-            flags=re.IGNORECASE,
-        )
-        return cleaned_text.strip()
-    return "No Answer"
+    resolved_positions = []
+    last_known = 0
+    for question_id, position in positions:
+        if position is None:
+            position = last_known
+        else:
+            last_known = position
+        resolved_positions.append((question_id, position))
 
+    answers = {}
+    for idx, (question_id, start_pos) in enumerate(resolved_positions):
+        end_pos = len(normalized_text)
+        for _, next_pos in resolved_positions[idx + 1 :]:
+            if next_pos > start_pos:
+                end_pos = next_pos
+                break
+        chunk = normalized_text[start_pos:end_pos].strip() if start_pos is not None else ""
+        answers[question_id] = chunk or "No Answer"
 
-def _safe_normalize_series(series):
-    return series.fillna("").apply(clean_ocr_artifacts).apply(build_embedding_text)
+    return answers
 
 
 def _normalize_embeddings(embeddings):
@@ -62,37 +77,34 @@ def _normalize_embeddings(embeddings):
 def _reassign_outliers(cluster_ids, embeddings, similarity_threshold=0.58):
     cluster_ids = np.array(cluster_ids, dtype=int)
     normalized_embeddings = _normalize_embeddings(np.asarray(embeddings))
-    unique_clusters = [cluster_id for cluster_id in sorted(set(cluster_ids.tolist())) if cluster_id != -1]
-    if not unique_clusters:
-        return cluster_ids
-
-    centroids = {}
-    for cluster_id in unique_clusters:
-        cluster_vectors = normalized_embeddings[cluster_ids == cluster_id]
-        if len(cluster_vectors) == 0:
+    cluster_centroids = {}
+    for cluster_id in sorted(set(cluster_ids.tolist())):
+        if cluster_id == -1:
             continue
-        centroid = cluster_vectors.mean(axis=0)
+        vectors = normalized_embeddings[cluster_ids == cluster_id]
+        if len(vectors) == 0:
+            continue
+        centroid = vectors.mean(axis=0)
         centroid_norm = np.linalg.norm(centroid)
         if centroid_norm == 0:
             continue
-        centroids[cluster_id] = centroid / centroid_norm
+        cluster_centroids[cluster_id] = centroid / centroid_norm
 
-    if not centroids:
+    if not cluster_centroids:
         return cluster_ids
 
     for index, cluster_id in enumerate(cluster_ids):
         if cluster_id != -1:
             continue
         similarities = {
-            candidate_id: float(np.dot(normalized_embeddings[index], centroid))
-            for candidate_id, centroid in centroids.items()
+            candidate: float(np.dot(normalized_embeddings[index], centroid))
+            for candidate, centroid in cluster_centroids.items()
         }
         if not similarities:
             continue
         best_cluster, best_similarity = max(similarities.items(), key=lambda item: item[1])
         if best_similarity >= similarity_threshold:
             cluster_ids[index] = best_cluster
-
     return cluster_ids
 
 
@@ -100,26 +112,51 @@ def cluster_answers(
     results_json_path,
     output_csv_path,
     output_json_path,
+    answer_key_path=None,
     include_flagged=True,
 ):
     results_json_path = Path(results_json_path)
     output_csv_path = Path(output_csv_path)
     output_json_path = Path(output_json_path)
+    backend_dir = Path(__file__).resolve().parent
+    answer_key_path = Path(answer_key_path or backend_dir / "Answer_Key_Q1_Q2.csv")
 
     print("--- Loading JSON OCR Data ---")
     with open(results_json_path, "r", encoding="utf-8") as file:
         ocr_data = json.load(file)
 
-    df = pd.DataFrame(ocr_data)
-    if df.empty:
+    if not ocr_data:
         raise ValueError("OCR results are empty. Cannot cluster answers.")
 
-    clean_df = df.copy() if include_flagged else df[df["flagged"] == False].copy()
+    teacher_answers = load_teacher_answers(answer_key_path)
+    question_ids = [question_id for question_id in teacher_answers.keys() if str(question_id).strip()]
 
-    clean_df["Q1_Answer"] = clean_df["full_text"].apply(extract_q1)
-    clean_df["Q2_Answer"] = clean_df["full_text"].apply(extract_q2)
-    clean_df["Q1_Embedding_Text"] = _safe_normalize_series(clean_df["Q1_Answer"])
-    clean_df["Q2_Embedding_Text"] = _safe_normalize_series(clean_df["Q2_Answer"])
+    rows = []
+    for row in ocr_data:
+        if not include_flagged and row.get("flagged"):
+            continue
+
+        split_answers = split_answers_by_question(row.get("full_text", ""), question_ids)
+        for question_id in question_ids:
+            if not str(question_id).strip():
+                continue
+            answer_text = split_answers.get(question_id, "No Answer")
+            rows.append({
+                "student_id": str(row.get("student_id", "")),
+                "document_id": row.get("document_id", row.get("student_id", "")),
+                "question_id": question_id,
+                "answer_text": answer_text,
+                "embedding_text": build_embedding_text(answer_text),
+                "script_type": row.get("script_type", "unknown"),
+                "avg_confidence": row.get("avg_confidence", 0),
+                "flagged": row.get("flagged", False),
+                "grouping_strategy": row.get("grouping_strategy", ""),
+                "source_files": json.dumps(row.get("source_files", []), ensure_ascii=False),
+            })
+
+    answers_df = pd.DataFrame(rows)
+    if answers_df.empty:
+        raise ValueError("No answers were extracted for clustering.")
 
     print("--- Loading the SentenceTransformer Model ---")
     model = SentenceTransformer("paraphrase-multilingual-mpnet-base-v2")
@@ -130,23 +167,32 @@ def cluster_answers(
         cluster_selection_epsilon=0.05,
     )
 
-    print("\n--- PASS 1: Clustering Question 1 ---")
-    q1_embeddings = model.encode(clean_df["Q1_Embedding_Text"].tolist())
-    clean_df["Q1_Cluster_ID"] = _reassign_outliers(clusterer.fit_predict(q1_embeddings), q1_embeddings)
+    clustered_frames = []
+    for question_id, question_df in answers_df.groupby("question_id", sort=False):
+        if not str(question_id).strip():
+            continue
+        print(f"\n--- CLUSTERING {question_id} ---")
+        texts = question_df["embedding_text"].fillna("").tolist()
+        if len(question_df) == 1:
+            cluster_ids = np.array([0], dtype=int)
+        else:
+            embeddings = model.encode(texts)
+            cluster_ids = clusterer.fit_predict(embeddings)
+            cluster_ids = _reassign_outliers(cluster_ids, embeddings)
 
-    print("--- PASS 2: Clustering Question 2 ---")
-    q2_embeddings = model.encode(clean_df["Q2_Embedding_Text"].tolist())
-    clean_df["Q2_Cluster_ID"] = _reassign_outliers(clusterer.fit_predict(q2_embeddings), q2_embeddings)
+        clustered_question_df = question_df.copy()
+        clustered_question_df["cluster_id"] = cluster_ids
+        clustered_frames.append(clustered_question_df)
+
+    export_df = pd.concat(clustered_frames, ignore_index=True)
 
     print("\n=== FINAL CLUSTERING RESULTS ===")
-    print(clean_df[["student_id", "Q1_Cluster_ID", "Q2_Cluster_ID"]])
+    print(export_df[["student_id", "question_id", "cluster_id"]].to_string(index=False))
 
     output_csv_path.parent.mkdir(parents=True, exist_ok=True)
     output_json_path.parent.mkdir(parents=True, exist_ok=True)
-
-    export_df = clean_df.drop(columns=["full_text"], errors="ignore")
     export_df.to_csv(output_csv_path, index=False)
-    export_df.to_json(output_json_path, orient="records", indent=2)
+    export_df.to_json(output_json_path, orient="records", indent=2, force_ascii=False)
 
     print(f"Saved clustered CSV: {output_csv_path}")
     print(f"Saved clustered JSON: {output_json_path}")
@@ -161,4 +207,5 @@ if __name__ == "__main__":
         results_json_path=project_root / "ocr_output" / "results.json",
         output_csv_path=backend_dir / "final_clustered_grades.csv",
         output_json_path=backend_dir / "final_clustered_grades.json",
+        answer_key_path=backend_dir / "Answer_Key_Q1_Q2.csv",
     )

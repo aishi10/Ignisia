@@ -242,6 +242,7 @@ def grade_cluster(cluster_payload):
         if not student_text or not re.search(r"[A-Za-z\u0900-\u097F]", student_text):
             results.append({
                 "student_id": ans["student_id"],
+                "script_type": ans.get("script_type", "unknown"),
                 "score": 0,
                 "confidence": 0,
                 "feedback": ["Invalid or empty answer"],
@@ -310,6 +311,7 @@ def grade_cluster(cluster_payload):
 
         results.append({
             "student_id": ans["student_id"],
+            "script_type": ans.get("script_type", "unknown"),
             "score": round(final_score, 2),
             "confidence": round(final_score, 2),
             "feedback": feedback,

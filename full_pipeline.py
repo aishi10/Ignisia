@@ -2,6 +2,7 @@ import argparse
 import sys
 import time
 from pathlib import Path
+from datetime import datetime
 
 from cost_efficiency_logger import (
     DEFAULT_INPUT_COST_PER_1M,
@@ -64,6 +65,15 @@ def print_cost_summary(summary, json_log_path, csv_log_path):
     print(f"Efficiency CSV saved to: {csv_log_path}")
 
 
+def build_run_dir(base_dir, source):
+    stem = Path(str(source)).stem or "run"
+    safe_stem = "".join(ch if ch.isalnum() or ch in {"_", "-"} else "_" for ch in stem).strip("_") or "run"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = base_dir / "runs" / f"{timestamp}_{safe_stem}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    return run_dir
+
+
 def run_full_pipeline(
     source,
     answer_key_path=None,
@@ -80,29 +90,34 @@ def run_full_pipeline(
     from ocr_final import run_pipeline as run_ocr_pipeline
 
     answer_key_path = Path(answer_key_path or backend_dir / "Answer_Key_Q1_Q2.csv")
+    run_dir = build_run_dir(backend_dir, source)
     stage_times = {}
 
     print("\n=== STAGE 1: OCR ===")
     stage_start = time.perf_counter()
-    run_ocr_pipeline(source, group_by=group_by, manifest_path=manifest_path)
+    run_ocr_pipeline(
+        source,
+        group_by=group_by,
+        manifest_path=manifest_path,
+        output_dir=run_dir / "ocr_output",
+    )
     stage_times["ocr_seconds"] = round(time.perf_counter() - stage_start, 2)
 
     print("\n=== STAGE 2: CLUSTERING ===")
-    backend_ocr_results = backend_dir / "ocr_output" / "results.json"
-    project_ocr_results = project_root / "ocr_output" / "results.json"
-    results_json_path = backend_ocr_results if backend_ocr_results.exists() else project_ocr_results
-    clustered_csv_path = backend_dir / "final_clustered_grades.csv"
-    clustered_json_path = backend_dir / "final_clustered_grades.json"
+    results_json_path = run_dir / "ocr_output" / "results.json"
+    clustered_csv_path = run_dir / "clustered_answers.csv"
+    clustered_json_path = run_dir / "clustered_answers.json"
     stage_start = time.perf_counter()
     cluster_answers(
         results_json_path=results_json_path,
         output_csv_path=clustered_csv_path,
         output_json_path=clustered_json_path,
+        answer_key_path=answer_key_path,
     )
     stage_times["clustering_seconds"] = round(time.perf_counter() - stage_start, 2)
 
     print("\n=== STAGE 3: GRADING ===")
-    output_path = backend_dir / "output.json"
+    output_path = run_dir / "grading_output.json"
     stage_start = time.perf_counter()
     final_output = run_grading_pipeline(
         clustered_csv_path=clustered_csv_path,
@@ -123,10 +138,18 @@ def run_full_pipeline(
         stage_times=stage_times,
         results_json_path=results_json_path,
         output_path=output_path,
+        log_dir=run_dir / "logs",
     )
     print_cost_summary(summary, json_log_path, csv_log_path)
 
-    return final_output
+    return {
+        "results": final_output,
+        "run_dir": run_dir,
+        "output_path": output_path,
+        "clustered_csv_path": clustered_csv_path,
+        "results_json_path": results_json_path,
+        "summary": summary,
+    }
 
 
 if __name__ == "__main__":

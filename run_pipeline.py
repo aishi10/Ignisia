@@ -22,11 +22,14 @@ def run_grading_pipeline(
     clusters = group_by_cluster(data)
 
     final_output = {
-        "Q1": [],
-        "Q2": []
+        question_id: []
+        for question_id in teacher_answers.keys()
+        if str(question_id).strip()
     }
 
     for (qid, cluster_id), answers in clusters.items():
+        if not str(qid).strip():
+            continue
         teacher_data = teacher_answers.get(qid, {})
         rubric = generate_rubric(teacher_data)
 

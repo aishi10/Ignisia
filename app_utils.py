@@ -3,6 +3,7 @@ import copy
 import json
 import re
 import sys
+import tempfile
 import zipfile
 from contextlib import contextmanager
 from pathlib import Path
@@ -17,10 +18,8 @@ UPLOADS_DIR = ROOT_DIR / "uploads"
 sys.path.insert(0, str(ROOT_DIR))
 sys.path.insert(0, str(BACKEND_DIR))
 
-from backend.cost_efficiency_logger import generate_cost_efficiency_summary
-from backend.embedding import cluster_answers
-from backend.run_pipeline import run_grading_pipeline
-from ocr_final import run_pipeline as run_ocr_pipeline
+from backend.full_pipeline import run_full_pipeline
+from backend.feedback_generator import generate_feedback_packages
 
 
 @contextmanager
@@ -78,68 +77,76 @@ def prepare_source_from_upload(uploaded_file, run_root):
     raise ValueError("Unsupported file type. Upload a PDF, PNG/JPG image, or ZIP file.")
 
 
+def prepare_source_from_multiple_images(uploaded_files, run_root):
+    sheets_dir = run_root / "sheets"
+    sheets_dir.mkdir(parents=True, exist_ok=True)
+
+    saved_any = False
+    for uploaded_file in uploaded_files:
+        suffix = Path(uploaded_file.name).suffix.lower()
+        if suffix not in {".png", ".jpg", ".jpeg"}:
+            continue
+        save_uploaded_file(uploaded_file, sheets_dir / uploaded_file.name)
+        saved_any = True
+
+    if not saved_any:
+        raise ValueError("Upload at least one PNG/JPG image.")
+
+    return sheets_dir
+
+
 def run_streamlit_pipeline(source_path, answer_key_path, group_by, manifest_path=None):
-    stage_times = {}
-
     with st.status("Running OCR, clustering, and grading...", expanded=True) as status:
-        status.write("Stage 1: OCR")
-        with st.spinner("Running OCR..."):
-            import time
-
-            start = time.perf_counter()
-            run_ocr_pipeline(
-                str(source_path),
-                group_by=group_by,
-                manifest_path=str(manifest_path) if manifest_path else None,
-            )
-            stage_times["ocr_seconds"] = round(time.perf_counter() - start, 2)
-
-        backend_ocr_results = BACKEND_DIR / "ocr_output" / "results.json"
-        project_ocr_results = ROOT_DIR / "ocr_output" / "results.json"
-        results_json_path = backend_ocr_results if backend_ocr_results.exists() else project_ocr_results
-
-        clustered_csv_path = BACKEND_DIR / "final_clustered_grades.csv"
-        clustered_json_path = BACKEND_DIR / "final_clustered_grades.json"
-
-        status.write("Stage 2: Clustering")
-        with st.spinner("Clustering answers..."):
-            start = time.perf_counter()
-            cluster_answers(
-                results_json_path=results_json_path,
-                output_csv_path=clustered_csv_path,
-                output_json_path=clustered_json_path,
-            )
-            stage_times["clustering_seconds"] = round(time.perf_counter() - start, 2)
-
-        output_path = BACKEND_DIR / "output.json"
-        status.write("Stage 3: Grading")
-        with st.spinner("Grading clusters..."):
-            start = time.perf_counter()
+        status.write("Running isolated pipeline for this upload")
+        with st.spinner("Running OCR, clustering, and grading..."):
             with non_interactive_review():
-                results = run_grading_pipeline(
-                    clustered_csv_path=clustered_csv_path,
+                result_bundle = run_full_pipeline(
+                    source=str(source_path),
                     answer_key_path=answer_key_path,
-                    output_path=output_path,
+                    group_by=group_by,
+                    manifest_path=str(manifest_path) if manifest_path else None,
                 )
-            stage_times["grading_seconds"] = round(time.perf_counter() - start, 2)
-
-        stage_times["total_seconds"] = round(sum(stage_times.values()), 2)
-
-        summary, _, _ = generate_cost_efficiency_summary(
-            source=str(source_path),
-            answer_key_path=answer_key_path,
-            group_by=group_by,
-            manifest_path=str(manifest_path) if manifest_path else None,
-            model_name="gpt-4.1-mini-estimate",
-            input_cost_per_1m=0.15,
-            output_cost_per_1m=0.60,
-            stage_times=stage_times,
-            results_json_path=results_json_path,
-            output_path=output_path,
-        )
+        results = result_bundle["results"]
+        summary = result_bundle["summary"]
+        output_path = result_bundle["output_path"]
+        clustered_csv_path = result_bundle["clustered_csv_path"]
+        results_json_path = result_bundle["results_json_path"]
         status.update(label="Pipeline complete", state="complete", expanded=False)
 
-    return results, summary, output_path, clustered_csv_path, results_json_path
+    return results, summary, output_path, clustered_csv_path, results_json_path, result_bundle["run_dir"]
+
+
+def build_reviews_from_results(results):
+    reviews = []
+    for question_id, clusters in results.items():
+        for cluster in clusters:
+            semantic = cluster.get("semantic_evaluation", {})
+            reviews.append({
+                "question_id": question_id,
+                "cluster_id": int(cluster.get("cluster_id")),
+                "final_marks": semantic.get("suggested_marks_display", "manual review required"),
+                "teacher_note": semantic.get("reason", "Cluster review required."),
+                "source": "streamlit-reviewed-results",
+            })
+    return reviews
+
+
+def run_streamlit_feedback_generation(results, answer_key_path, clustered_csv_path, grading_output_path):
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_root = Path(temp_dir)
+        review_path = temp_root / "streamlit_reviews.json"
+        with open(review_path, "w", encoding="utf-8") as file:
+            json.dump({"reviews": build_reviews_from_results(results)}, file, indent=2, ensure_ascii=False)
+
+        backend_run_dir = Path(st.session_state.get("backend_run_dir", BACKEND_DIR))
+        feedback_output_dir = backend_run_dir / "exports"
+        return generate_feedback_packages(
+            review_path=review_path,
+            clustered_csv_path=clustered_csv_path,
+            answer_key_path=answer_key_path,
+            grading_output_path=grading_output_path,
+            output_dir=feedback_output_dir,
+        )
 
 
 def apply_cluster_override(results, question_id, cluster_id, marks_value, total_marks, reason_value):
@@ -171,6 +178,13 @@ def build_cluster_overview_df(results):
         for cluster in clusters:
             semantic = cluster.get("semantic_evaluation", {})
             suggested_marks = semantic.get("suggested_marks")
+            script_types = sorted(
+                {
+                    result.get("script_type", "unknown")
+                    for result in cluster.get("results", [])
+                    if result.get("script_type")
+                }
+            )
             rows.append({
                 "question_id": question_id,
                 "cluster_id": cluster.get("cluster_id"),
@@ -181,6 +195,8 @@ def build_cluster_overview_df(results):
                 "suggested_marks": suggested_marks if suggested_marks is not None else 0,
                 "total_marks": semantic.get("total_marks", 0),
                 "threshold_passed": semantic.get("passed_similarity_threshold", False),
+                "manual_reviewed": semantic.get("manual_reviewed", False),
+                "script_types": ", ".join(script_types) if script_types else "unknown",
             })
     return pd.DataFrame(rows)
 
@@ -222,6 +238,18 @@ def render_dashboard_graphs(results, summary):
     col3.metric("Total Answers", int(overview_df["cluster_size"].sum()))
     col4.metric("Avg Cluster Confidence", round(float(overview_df["confidence"].mean()), 2))
 
+    metric_left, metric_right = st.columns(2)
+    script_breakdown = (
+        overview_df["script_types"]
+        .str.split(", ")
+        .explode()
+        .replace("", "unknown")
+        .value_counts()
+    )
+    reviewed_count = int(overview_df["manual_reviewed"].sum())
+    metric_left.metric("Reviewed Clusters", reviewed_count)
+    metric_right.metric("Detected Script Types", int(script_breakdown.shape[0]))
+
     left_col, right_col = st.columns(2)
 
     with left_col:
@@ -248,6 +276,10 @@ def render_dashboard_graphs(results, summary):
     )
     if not threshold_counts.empty:
         st.bar_chart(threshold_counts.set_index("status")["count"], use_container_width=True)
+
+    if not script_breakdown.empty:
+        st.markdown("### Script Distribution")
+        st.bar_chart(script_breakdown, use_container_width=True)
 
     batches = summary.get("batches", [])
     if batches:
@@ -340,6 +372,7 @@ def render_downloads():
     results = st.session_state.get("results")
     summary = st.session_state.get("summary")
     clustered_csv_path = st.session_state.get("clustered_csv_path")
+    feedback_packages = st.session_state.get("feedback_packages")
 
     if results is None:
         return
@@ -369,6 +402,17 @@ def render_downloads():
                 mime="text/csv",
             )
 
+    if feedback_packages:
+        feedback_path = Path(feedback_packages["feedback_path"])
+        if feedback_path.exists():
+            with open(feedback_path, "r", encoding="utf-8") as file:
+                st.download_button(
+                    "Download student_feedback.json",
+                    data=file.read(),
+                    file_name="student_feedback.json",
+                    mime="application/json",
+                )
+
 
 def load_cluster_answer_texts(clustered_csv_path, question_id, cluster_id):
     clustered_csv_path = Path(clustered_csv_path)
@@ -376,9 +420,18 @@ def load_cluster_answer_texts(clustered_csv_path, question_id, cluster_id):
         return []
 
     df = pd.read_csv(clustered_csv_path)
+    if {"question_id", "cluster_id", "answer_text"}.issubset(df.columns):
+        filtered = df[(df["question_id"] == question_id) & (df["cluster_id"] == cluster_id)]
+        rows = []
+        for _, row in filtered.iterrows():
+            rows.append({
+                "student_id": str(row.get("student_id", "")),
+                "answer_text": str(row.get("answer_text", "")).strip(),
+            })
+        return rows
+
     cluster_column = f"{question_id}_Cluster_ID"
     answer_column = f"{question_id}_Answer"
-
     if cluster_column not in df.columns or answer_column not in df.columns:
         return []
 
@@ -442,3 +495,67 @@ def load_cluster_image_paths(results_json_path, student_ids, saved_dataset_path=
             })
 
     return image_rows
+
+
+def load_cluster_rows(results_json_path, student_ids):
+    results_json_path = Path(results_json_path) if results_json_path else None
+    if not results_json_path or not results_json_path.exists():
+        return []
+
+    with open(results_json_path, "r", encoding="utf-8") as file:
+        ocr_rows = json.load(file)
+
+    wanted = {str(student_id) for student_id in student_ids}
+    return [
+        row for row in ocr_rows
+        if str(row.get("student_id", "")) in wanted
+    ]
+
+
+def render_feedback_packages(feedback_packages):
+    if not feedback_packages:
+        st.info("No student feedback packages have been generated yet.")
+        return
+
+    feedback_rows = feedback_packages.get("student_feedback", [])
+    st.subheader("Student Tutoring Feedback")
+    st.caption(f"Generated {len(feedback_rows)} feedback packages.")
+
+    if not feedback_rows:
+        return
+
+    feedback_df = pd.DataFrame(feedback_rows)
+    st.dataframe(
+        feedback_df[
+            [
+                "student_id",
+                "question_id",
+                "cluster_id",
+                "final_marks",
+                "used_model",
+                "pdf_path",
+                "email_path",
+            ]
+        ],
+        use_container_width=True,
+    )
+
+    preview_student = st.selectbox(
+        "Preview student feedback",
+        feedback_df["student_id"].astype(str).tolist(),
+        key="feedback_preview_student",
+    )
+    selected = next(
+        row for row in feedback_rows
+        if str(row.get("student_id")) == str(preview_student)
+    )
+    with st.container(border=True):
+        st.markdown(f"**Student ID:** {selected['student_id']}")
+        st.markdown(f"**Question:** {selected['question_id']}")
+        st.markdown(f"**Marks:** {selected['final_marks']}")
+        st.markdown("**Tutoring Paragraph**")
+        st.write(selected["tutoring_paragraph"])
+        st.markdown("**Practice Question**")
+        st.write(selected["practice_question"])
+        st.markdown("**Email Text**")
+        st.code(selected["email_text"], language="text")

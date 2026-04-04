@@ -1,7 +1,13 @@
 import streamlit as st
 import pandas as pd
 
-from app_utils import apply_cluster_override, load_cluster_image_paths, render_downloads
+from app_utils import (
+    apply_cluster_override,
+    load_cluster_image_paths,
+    render_downloads,
+    render_feedback_packages,
+    run_streamlit_feedback_generation,
+)
 
 
 def find_pending_outlier(results):
@@ -120,6 +126,8 @@ else:
         st.stop()
 
     for question_id, clusters in results.items():
+        if not str(question_id).strip():
+            continue
         st.markdown(f"## {question_id}")
         if not clusters:
             st.info(f"No clusters found for {question_id}.")
@@ -141,5 +149,22 @@ else:
                 if result_rows:
                     st.write("Student Results")
                     st.dataframe(pd.DataFrame(result_rows), use_container_width=True)
+
+    st.divider()
+    st.subheader("Tutoring Feedback Packages")
+    st.write("Generate personalized tutoring feedback, practice questions, and export files from the reviewed cluster results.")
+
+    if st.button("Generate Student Feedback Packages", type="primary", use_container_width=True):
+        with st.spinner("Generating tutoring feedback packages..."):
+            feedback_packages = run_streamlit_feedback_generation(
+                results=st.session_state["results"],
+                answer_key_path=st.session_state.get("answer_key_path"),
+                clustered_csv_path=st.session_state.get("clustered_csv_path"),
+                grading_output_path=st.session_state.get("output_path"),
+            )
+            st.session_state["feedback_packages"] = feedback_packages
+        st.success("Student feedback packages generated.")
+
+    render_feedback_packages(st.session_state.get("feedback_packages"))
 
     render_downloads()

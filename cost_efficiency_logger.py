@@ -55,9 +55,10 @@ def generate_cost_efficiency_summary(
     stage_times,
     results_json_path,
     output_path,
+    log_dir=None,
 ):
     backend_dir = Path(__file__).resolve().parent
-    log_dir = backend_dir / "logs"
+    log_dir = Path(log_dir or backend_dir / "logs")
     log_dir.mkdir(exist_ok=True)
 
     answer_key_path = Path(answer_key_path)

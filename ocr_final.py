@@ -238,7 +238,7 @@ def process_page(pil_img, client):
     return google_ocr_bytes(buffer.getvalue(), client)
 
 
-def run_pipeline(source, group_by="auto", manifest_path=None):
+def run_pipeline(source, group_by="auto", manifest_path=None, output_dir=None):
     print("GOOGLE OCR PIPELINE\n")
 
     client = get_client()
@@ -306,7 +306,7 @@ def run_pipeline(source, group_by="auto", manifest_path=None):
     print(f"Flagged: {flagged}")
     print("-" * 40)
 
-    output_dir = Path("ocr_output")
+    output_dir = Path(output_dir or "ocr_output")
     output_dir.mkdir(exist_ok=True)
 
     with open(output_dir / "results.json", "w", encoding="utf-8") as file:

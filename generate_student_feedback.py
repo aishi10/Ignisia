@@ -33,6 +33,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     backend_dir = Path(__file__).resolve().parent
+    clustered_csv_path = args.clustered_csv or backend_dir / "final_clustered_grades.csv"
+    grading_output_path = args.grading_output or backend_dir / "output.json"
+    output_dir = args.output_dir or backend_dir / "exports"
 
     if not args.skip_full_pipeline:
         source = args.folder or args.zip
@@ -40,20 +43,23 @@ if __name__ == "__main__":
             raise SystemExit("Provide --folder or --zip, or pass --skip-full-pipeline.")
 
         print("Running full pipeline before feedback generation...")
-        run_full_pipeline(
+        result_bundle = run_full_pipeline(
             source=source,
             answer_key_path=args.answer_key or backend_dir / "Answer_Key_Q1_Q2.csv",
             group_by=args.group_by,
             manifest_path=args.manifest,
         )
+        clustered_csv_path = result_bundle["clustered_csv_path"]
+        grading_output_path = result_bundle["output_path"]
+        output_dir = result_bundle["run_dir"] / "exports"
 
     print("Starting student feedback generation...")
     result = generate_feedback_packages(
         review_path=args.reviews,
-        clustered_csv_path=args.clustered_csv or backend_dir / "final_clustered_grades.csv",
+        clustered_csv_path=clustered_csv_path,
         answer_key_path=args.answer_key or backend_dir / "Answer_Key_Q1_Q2.csv",
-        grading_output_path=args.grading_output or backend_dir / "output.json",
-        output_dir=args.output_dir or backend_dir / "exports",
+        grading_output_path=grading_output_path,
+        output_dir=output_dir,
     )
 
     print(f"Review data used from: {result['review_path']}")
