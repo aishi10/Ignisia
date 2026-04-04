@@ -42,7 +42,7 @@ matched and missing concept indicators
 Teachers can inspect clusters, view answer-sheet images, review low-confidence clusters, override marks and reasons, and focus on outlier groups that need human attention.
 
 ### 6. Student Feedback Generation
-After review, Ignisia can generate personalized tutoring feedback for students, including:
+After review, Ignisia Grading Model can generate personalized tutoring feedback for students, including:
 
 short explanatory feedback
 concept recap
